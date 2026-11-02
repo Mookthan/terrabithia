@@ -1,0 +1,31 @@
+/* Like heart (components/ui/LikeHeart.jsx): red when liked + burst, after codepen.io/mindstorm/pen/aZZvKq */
+.like-heart { position: relative; display: inline-flex; }
+.like-heart .lc { transition: transform .25s; }
+.like-heart.on .lc { fill: #ED4956; stroke: #ED4956; }
+.like-heart .lc.lh-pop { animation: lhPop .7s cubic-bezier(.17, .89, .32, 1.49) both; }
+.lh-burst { position: absolute; left: 50%; top: 50%; width: 0; height: 0; pointer-events: none; }
+.lh-ring {
+  position: absolute; left: -17px; top: -17px; width: 34px; height: 34px; border-radius: 50%;
+  animation: lhRing .45s ease-out forwards;
+}
+.lh-dot {
+  position: absolute; left: -2.5px; top: -2.5px; width: 5px; height: 5px; border-radius: 50%;
+  background: #ED4956; opacity: 0; transform: rotate(var(--a)) translateY(-15px);
+  animation: lhDot .55s .2s ease-out forwards;
+}
+.lh-dot:nth-child(odd) { background: #F7A0A9; }
+.lh-dot:nth-child(4n + 1) { background: #27AE97; }
+@keyframes lhPop { 0%, 25% { transform: scale(0); } 60% { transform: scale(1.25); } 100% { transform: scale(1); } }
+@keyframes lhRing {
+  0% { transform: scale(0); box-shadow: inset 0 0 0 17px #ED4956; }
+  50% { transform: scale(1); box-shadow: inset 0 0 0 17px #F7A0A9; }
+  100% { transform: scale(1.1); box-shadow: inset 0 0 0 0 #F7A0A9; }
+}
+@keyframes lhDot {
+  0% { opacity: 1; transform: rotate(var(--a)) translateY(-15px) scale(1); }
+  100% { opacity: 0; transform: rotate(var(--a)) translateY(-24px) scale(.2); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .like-heart .lc.lh-pop { animation: none; }
+  .lh-burst { display: none; }
+}

@@ -1,0 +1,15 @@
+/* Core Value: rise-in when scrolled into view, then gentle float. */
+@keyframes cv-in { from { opacity: 0; transform: translateY(70px) scale(.88); } to { opacity: 1; transform: none; } }
+@keyframes cv-float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-14px); } }
+.cv-col { opacity: 0; }
+.cv-col.cv-in {
+  opacity: 1;
+  animation: cv-in .8s cubic-bezier(.2, .9, .25, 1.1) both;
+  animation-delay: calc(var(--i) * .18s);
+}
+@media (max-width: 1100px) { .cv-col.cv-in { animation-delay: 0s; } }
+.cv-float { animation: cv-float var(--f) ease-in-out var(--fd) infinite; }
+@media (prefers-reduced-motion: reduce) {
+  .cv-col { opacity: 1 !important; }
+  .cv-col, .cv-float { animation: none !important; }
+}

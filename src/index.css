@@ -1,0 +1,175 @@
+@tailwind base;
+
+:root {
+  --shadow-card: 0 6px 22px -10px rgba(0, 0, 0, .28);
+  --shadow-pop: 0 20px 48px -12px rgba(0, 0, 0, .28);
+}
+@tailwind components;
+@tailwind utilities;
+
+/* ---------- Base ---------- */
+@layer base {
+  /* Light only, so phone dark modes don't turn text fields black (mook, 2026-10-28). */
+  :root { --acc-dur: .4s; --acc-ease: cubic-bezier(.4, 0, .2, 1); color-scheme: light only; }
+  /* The prototype never set line-height; keep the browser default instead of Tailwind's 1.5. */
+  html { line-height: normal; }
+  html { overflow-y: scroll; overflow-x: hidden; scrollbar-gutter: stable; }
+  /* The prototype page set a 14px base size. */
+  body { @apply bg-cream pb-10 font-sans text-ink; font-size: 14px; overflow-x: clip; }
+  button, input, textarea, select { font-family: inherit; }
+  /* Text fields get an explicit white background: some in-app viewers (the Claude app on Android) darken fields left unstyled (mook 2026-11-01). Utilities like bg-transparent still win. */
+  input:not([type='checkbox']):not([type='radio']):not([type='range']):not([type='file']), textarea, select { background-color: #fff; color: #173F52; }
+  img { max-width: 100%; }
+}
+
+/* Signed-in home uses a full-bleed photo backdrop. */
+body.homebg { background: #EEF0FB; }
+body.homebg::before {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background: #EEF0FB url("/media/46adf0f3cd.jpg") center / cover no-repeat;
+}
+
+/* Lucide icons: sized by font-size unless a component overrides it. */
+.lc { width: 1em; height: 1em; flex: none; vertical-align: -.16em; display: inline-block; }
+
+/* Language switch fades the page out briefly while text is swapped. */
+body.lang-out [data-fade-on-lang] { opacity: 0; transition: opacity .16s ease; }
+[data-fade-on-lang] { transition: opacity .22s ease; }
+
+/* ---------- Page transition: children of the page wrapper rise in ---------- */
+@keyframes ptIn { from { opacity: 0; translate: 0 12px; } to { opacity: 1; translate: none; } }
+@keyframes ptFade { from { opacity: 0; } to { opacity: 1; } }
+.tab-fade { animation: ptFade .25s ease-out; }
+@keyframes sheetIn { from { translate: 100% 0; } to { translate: none; } }
+@keyframes sheetOut { from { translate: none; } to { translate: 100% 0; } }
+/* Album lightbox: each new photo fades in (mook 2026-10-30). */
+.lbx-in { animation: ptFade .28s ease both; }
+@media (prefers-reduced-motion: reduce) { .lbx-in { animation: none; } }
+.phone-sheet { animation: sheetIn .32s cubic-bezier(.22,1,.36,1) both; }
+.phone-sheet.is-leaving { animation: sheetOut .26s cubic-bezier(.55,0,.75,.2) both; }
+@media (prefers-reduced-motion: reduce) { .phone-sheet, .phone-sheet.is-leaving { animation: none; } }
+.pt-in > * { animation: ptIn .3s cubic-bezier(.22, 1, .36, 1) backwards; }
+.pt-in > *:nth-child(2) { animation-delay: .05s; }
+.pt-in > *:nth-child(3) { animation-delay: .1s; }
+.pt-in > *:nth-child(n+4) { animation-delay: .14s; }
+.pt-in > [data-pt="fade"] { animation-name: ptFade; }
+.pt-in > [data-pt="none"] { animation: none; }
+
+/* ---------- Scroll reveal: add data-reveal to a card; useReveal does the rest ---------- */
+[data-rv="pending"] { opacity: 0; translate: 0 30px; }
+[data-rv="in"] {
+  opacity: 1; translate: 0 0;
+  transition: opacity .75s ease var(--rd, 0ms), translate .75s cubic-bezier(.22, 1, .36, 1) var(--rd, 0ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pt-in > * { animation: none; }
+  [data-rv="pending"] { opacity: 1; translate: none; }
+}
+
+/* ---------- Form ticks: one look everywhere (white box, mint-green #27AE97 when ticked) ----------
+   Drawn with appearance:none so phones in dark mode don't paint the native box dark. */
+@layer base {
+  input[type='checkbox'], input[type='radio'] {
+    appearance: none; -webkit-appearance: none; flex: none; display: inline-grid; place-content: center;
+    width: 16px; height: 16px; margin: 0; cursor: pointer;
+    border: 1.5px solid #b9c2bc; border-radius: 4px; background: #fff; color-scheme: light;
+    transition: background-color .15s, border-color .15s, box-shadow .15s;
+  }
+  input[type='radio'] { border-radius: 50%; }
+  input[type='checkbox']:hover, input[type='radio']:hover { border-color: #27AE97; }
+  input[type='checkbox']:checked, input[type='checkbox']:indeterminate { background: #27AE97; border-color: #27AE97; }
+  input[type='checkbox']:checked::before {
+    content: ''; width: 10px; height: 10px; background: #fff;
+    clip-path: polygon(14% 44%, 0 59%, 40% 100%, 100% 21%, 86% 7%, 39% 69%);
+  }
+  input[type='checkbox']:indeterminate::before { content: ''; width: 8px; height: 2px; border-radius: 1px; background: #fff; }
+  input[type='radio']:checked { border-color: #27AE97; box-shadow: inset 0 0 0 3px #fff; background: #27AE97; }
+  input[type='checkbox']:focus-visible, input[type='radio']:focus-visible { outline: 2px solid rgba(39, 174, 151, .45); outline-offset: 2px; }
+  /* Text fields sit inside their own bordered boxes: no browser focus ring (mook, 2026-10-16). */
+  input:not([type='checkbox']):not([type='radio']):focus, textarea:focus, select:focus, [contenteditable]:focus { outline: none; }
+}
+
+/* ---------- Dropdown panels: frosted glass card (same as the Download filter) ---------- */
+@layer components {
+  .dd-glass {
+    border: 1px solid rgba(255, 255, 255, .85); border-radius: 14px;
+    background: linear-gradient(160deg, rgba(255, 255, 255, .86), rgba(214, 243, 236, .74));
+    -webkit-backdrop-filter: blur(22px) saturate(180%); backdrop-filter: blur(22px) saturate(180%);
+    box-shadow: 0 24px 60px rgba(21, 80, 70, .22), inset 0 1px 0 rgba(255, 255, 255, .95);
+  }
+  /* Stretch open / shut by animating the row height (the card itself is never clipped or filtered,
+     so the blur keeps working). Content lives in the single child. */
+  .dd-fold {
+    display: grid; grid-template-rows: 0fr; overflow: hidden; opacity: 0; visibility: hidden; pointer-events: none;
+    transition: grid-template-rows .42s cubic-bezier(.4, 0, .2, 1), opacity .25s ease .17s, visibility 0s .42s;
+  }
+  .dd-fold.is-open {
+    grid-template-rows: 1fr; opacity: 1; visibility: visible; pointer-events: auto;
+    transition: grid-template-rows .45s cubic-bezier(.4, 0, .2, 1), opacity .2s ease, visibility 0s;
+  }
+  .dd-fold > * { min-height: 0; }
+}
+@media (prefers-reduced-motion: reduce) { .dd-fold { transition: none !important; } }
+
+/* ---------- Desktop zoom: from 1280px the page is drawn at 85% (mook, 2026-10-27).
+   Viewport units are corrected by build/postcss-desktop-zoom.js; keep ZOOM there in step. ---------- */
+@media (min-width: 1280px) {
+  html { zoom: .85; }
+}
+
+/* ---------- Monopo-style motion (mook 2026-10-29): RevealText + HoverCursor ---------- */
+.rt-w { display: inline-block; overflow: hidden; vertical-align: top; padding-block: .14em; margin-block: -.14em; }
+.rt-i { display: inline-block; transform: translateY(110%); opacity: 0; transition: transform .8s cubic-bezier(.19, 1, .22, 1), opacity .5s ease; transition-delay: calc(var(--i) * 55ms); }
+.rt.is-in .rt-i { transform: none; opacity: 1; }
+.hover-cursor { position: fixed; left: 0; top: 0; z-index: 3000; pointer-events: none; }
+.hover-cursor-ball { position: absolute; left: 0; top: 0; display: flex; flex-direction: column; gap: 4px; align-items: center; justify-content: center; width: 104px; height: 104px; margin: -52px 0 0 -52px; border-radius: 9999px; background: #27AE97; color: #fff; font-size: 13px; font-weight: 700; text-align: center; line-height: 1.25; padding: 10px; box-shadow: var(--shadow-pop); transform: scale(0); transition: transform .45s cubic-bezier(.19, 1, .22, 1); }
+.hover-cursor-ball.is-on { transform: scale(1); }
+@media (hover: hover) and (pointer: fine) {
+  [data-cursor], [data-cursor] *:not(button):not(a) { cursor: none !important; }
+  /* Buttons and links inside a card (favourite heart, reactions) keep their own pointer and hide the ball. */
+  [data-cursor] :is(button, a, [role="button"]), [data-cursor] :is(button, a) *:not(button) { cursor: pointer !important; }
+  /* A centred play badge would repeat the trailing ball, so mouse users only see the ball. */
+  .cursor-twin { display: none !important; }
+}
+@media (prefers-reduced-motion: reduce) { .rt-i { transform: none; opacity: 1; transition: none; } }
+
+/* Full-width Tabs swap long labels for short ones when the row itself is narrow (popups, side columns). */
+.tabs-cq { container-type: inline-size; }
+.tabs-cq .tab-short { display: none; }
+@container (max-width: 360px) {
+  .tabs-cq .tab-long { display: none; }
+  .tabs-cq .tab-short { display: inline; }
+}
+
+/* ---------- Micro-interactions (mook 2026-11-01): press, arrow nudge, icon pop, bell ring ---------- */
+/* Every button / tab shrinks a touch while pressed. The transition list keeps the usual hover fades. */
+button:not(:disabled):not(.transition-none):not([data-rv]),
+[role="button"]:not(.transition-none):not([data-rv]),
+[role="tab"]:not(.transition-none):not([data-rv]) {
+  transition-property: color, background-color, border-color, box-shadow, opacity, transform, translate, rotate, scale, filter;
+  transition-duration: .2s;
+  transition-timing-function: ease;
+}
+button:not(:disabled):not([data-no-press]):active,
+[role="button"]:not([data-no-press]):active,
+[role="tab"]:active { scale: .97; transition-duration: .08s; }
+/* "Go" arrows slide forward when their link or button is hovered. */
+svg.lucide-chevron-right, svg.lucide-arrow-right, svg.lucide-arrow-up-right { transition: translate .2s ease; }
+:is(a, button, [role="button"]):hover > svg:is(.lucide-chevron-right, .lucide-arrow-right),
+:is(a, button, [role="button"]):hover > span > svg:is(.lucide-chevron-right, .lucide-arrow-right) { translate: 3px 0; }
+:is(a, button, [role="button"]):hover > svg.lucide-arrow-up-right { translate: 2px -2px; }
+/* Icon-only buttons: the icon pops slightly on hover (ICON_HOVER adds .icon-pop). */
+.icon-pop > svg { transition: scale .2s cubic-bezier(.34, 1.56, .64, 1); }
+.icon-pop:hover > svg { scale: 1.12; }
+/* Bell rings when new notifications arrive (NotificationBell toggles .bell-ring). */
+@keyframes bellRing {
+  0%, 100% { rotate: 0deg; }
+  15% { rotate: 16deg; } 30% { rotate: -14deg; } 45% { rotate: 10deg; } 60% { rotate: -6deg; } 75% { rotate: 3deg; }
+}
+.bell-ring > svg { transform-origin: 50% 8%; animation: bellRing .9s ease-in-out; }
+@media (prefers-reduced-motion: reduce) {
+  button:active, [role="button"]:active, [role="tab"]:active { scale: none; }
+  .bell-ring > svg { animation: none; }
+  :is(a, button, [role="button"]):hover svg { translate: none; scale: none; }
+}

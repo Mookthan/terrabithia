@@ -1,0 +1,75 @@
+/* Birthday feature: only what Tailwind can't express (keyframes, animation vars, scrollbars). */
+
+@keyframes bdFade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes bdUp { from { opacity: 0; translate: 0 24px; scale: .98; } to { opacity: 1; translate: 0 0; scale: 1; } }
+@keyframes bdSheet { from { translate: 0 100%; } to { translate: 0 0; } }
+@keyframes bdConf { 0% { opacity: 1; translate: 0 0; rotate: 0deg; } 100% { opacity: 0; translate: var(--x) var(--y); rotate: var(--r); } }
+@keyframes bdFsIn { from { opacity: 0; scale: .97; } to { opacity: 1; scale: 1; } }
+@keyframes bdPageOpen { from { opacity: 0; transform: rotateY(-95deg) scale(.9); } to { opacity: 1; transform: none; } }
+@keyframes bdPageNext { from { opacity: 0; transform: rotateY(70deg); } to { opacity: 1; transform: none; } }
+@keyframes bdPagePrev { from { opacity: 0; transform: rotateY(-70deg); } to { opacity: 1; transform: none; } }
+@keyframes bdNope { 0%, 100% { translate: 0; } 20% { translate: -8px; rotate: -1.5deg; } 40% { translate: 8px; rotate: 1.5deg; } 60% { translate: -5px; } 80% { translate: 5px; } }
+@keyframes bdDrop { from { opacity: 0; translate: 0 -40px; scale: 1.08; } to { opacity: 1; translate: 0 0; scale: 1; } }
+@keyframes bdWig { 0%, 100% { rotate: -3deg; } 50% { rotate: 3deg; } }
+
+.bd-fade { animation: bdFade .22s ease both; }
+.bd-up { animation: bdUp .35s ease both; }
+.bd-sheet { animation: bdUp .35s cubic-bezier(.22, 1, .36, 1) both; }
+@media (max-width: 640px) {
+  .bd-sheet { animation: bdSheet .38s cubic-bezier(.22, 1, .36, 1) both; }
+}
+.bd-fs { animation: bdFsIn .28s ease both; }
+.bd-wiggle { animation: bdWig 2.4s ease-in-out infinite; }
+
+/* confetti pieces */
+.bd-conf i {
+  position: absolute; width: 8px; height: 12px; border-radius: 2px; background: var(--c); opacity: 0;
+  animation: bdConf 1.3s ease-out var(--d) both;
+}
+
+/* closed book: the cover swings open around the spine */
+.bd-bookcover { transform-origin: left center; transition: transform .85s cubic-bezier(.5, 0, .2, 1), opacity .85s; }
+.bd-bookcover-open { transform: rotateY(-155deg); opacity: .15; }
+.bd-nope { animation: bdNope .5s ease; }
+
+/* card reader: pages turn around the left edge */
+.bd-page-open, .bd-page-next { transform-origin: left center; }
+.bd-page-prev { transform-origin: right center; }
+.bd-page-open { animation: bdPageOpen .7s cubic-bezier(.3, .9, .3, 1) both; }
+.bd-page-next { animation: bdPageNext .5s cubic-bezier(.3, .9, .3, 1) both; }
+.bd-page-prev { animation: bdPagePrev .5s cubic-bezier(.3, .9, .3, 1) both; }
+
+/* cards heaped in the book: tilted, overlapping the row above, dropped in one after another */
+.bd-pile {
+  position: relative; z-index: var(--z); margin-bottom: -6px; rotate: var(--rt, 0deg); cursor: pointer;
+  animation: bdDrop .5s cubic-bezier(.34, 1.4, .64, 1) calc(var(--i) * 80ms) both;
+  transition: rotate .25s, transform .25s;
+}
+.bd-pile:hover { rotate: 0deg; transform: translateY(-4px) scale(1.02); z-index: 40; }
+
+.bd-noscroll { scrollbar-width: none; }
+.bd-noscroll::-webkit-scrollbar { display: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  .bd-fade, .bd-up, .bd-sheet, .bd-fs, .bd-wiggle, .bd-conf i, .bd-pile, .bd-nope, .bd-page-open, .bd-page-next, .bd-page-prev { animation: none; }
+  .bd-bookcover { transition: none; }
+}
+
+/* stickers: die-cut vinyl look (white edge + tight contact shadow); photos get a soft shadow */
+.bd-stk-diecut{filter:drop-shadow(.04em 0 0 #fff) drop-shadow(-.04em 0 0 #fff) drop-shadow(0 .04em 0 #fff) drop-shadow(0 -.04em 0 #fff) drop-shadow(0 .025em .03em rgba(40,30,20,.4))}
+.bd-stk-photo{filter:drop-shadow(0 .03em .05em rgba(40,30,20,.35))}
+
+/* card flip: the cover swings open to the left and shows the paper inside */
+.bd-flip{position:relative;perspective:1500px;cursor:pointer;-webkit-tap-highlight-color:transparent;outline:none}
+.bd-flip-in{position:absolute;inset:0;z-index:1;isolation:isolate}
+.bd-flip-in>[data-bcard]{height:100%}
+.bd-flip-cover{position:relative;z-index:2;transform-origin:left center;transition:transform .9s cubic-bezier(.3,.8,.3,1);backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.bd-flip.open .bd-flip-cover{transform:rotateY(-168deg);pointer-events:none}
+.bd-flip-hint{animation:bdNudge 2.2s ease-in-out infinite;transition:opacity .3s}
+.bd-flip.open .bd-flip-hint{opacity:0}
+@keyframes bdNudge{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-3px)}}
+
+/* composer accordion: rows slide open */
+.bd-acc-body{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .4s cubic-bezier(.3,.8,.3,1),opacity .3s ease}
+.bd-acc-body.open{grid-template-rows:1fr;opacity:1}
+@media(prefers-reduced-motion:reduce){.bd-flip-cover,.bd-acc-body{transition:none}.bd-flip-hint{animation:none}}

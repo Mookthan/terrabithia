@@ -1,0 +1,96 @@
+/* About-us feature: rules Tailwind can't express cleanly.
+   Org-chart node markup is generated as an HTML string for d3-org-chart, so it is styled here. */
+
+/* ---------- Org chart nodes (d3-org-chart nodeContent) ---------- */
+.org-node { border-radius: 10px; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; font-family: 'Sarabun', sans-serif; font-size: 10.5px; line-height: normal; text-align: center; padding: 4px; box-sizing: border-box; }
+.org-node.person { background: #fff; border: 1px solid #E3E1D6; box-shadow: var(--shadow-card); }
+.org-node.dept { color: #fff; font-weight: 600; }
+.org-avatar { width: 28px; height: 28px; border-radius: 50%; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 11px; margin-bottom: 4px; overflow: hidden; }
+.org-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
+.org-label { font-weight: 700; color: #173F52; font-size: 10px; }
+.org-info { position: absolute; top: 3px; right: 3px; background: none; border: none; cursor: pointer; color: #12986F; width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; padding: 0; }
+.org-info svg { width: 14px; height: 14px; }
+.org-info:hover { background: rgb(18 152 111 / .12); }
+.org-badge { position: absolute; top: -6px; right: -6px; background: #1C3A5C; color: #fff; border-radius: 50%; width: 16px; height: 16px; font-size: 9px; display: flex; align-items: center; justify-content: center; }
+.org-box svg { overflow: hidden; display: inline; }
+
+/* Filter panel: chevron flips while open (the panel itself is a DropPanel) */
+.org-top:has(.org-fpanel.is-open) .org-fchev { transform: rotate(180deg); }
+
+/* Fullscreen view */
+@keyframes org-fs-in { from { opacity: 0; scale: .97; } to { opacity: 1; scale: 1; } }
+.org-fs { animation: org-fs-in .28s ease both; }
+
+/* ---------- Milestones: sticky stacked cards ---------- */
+.ms-card { top: calc(112px + var(--i) * 14px); transform-origin: 50% 0; will-change: scale, filter; }
+.ms-card:nth-child(3n+2) { border-left-color: theme('colors.accent'); }
+.ms-card:nth-child(3n) { border-left-color: #7AAEFC; }
+@media (max-width: 700px) { .ms-card { top: calc(96px + var(--i) * 10px); } }
+
+/* ---------- Vision carousel ---------- */
+.vis-slide { opacity: 0; transform: scale(1.06); transition: opacity 1.1s ease, transform 5.5s ease-out; }
+.vis-slide.on { opacity: 1; transform: scale(1); }
+@media (prefers-reduced-motion: reduce) { .vis-slide { transition: opacity .3s; transform: none; } }
+
+/* ---------- Mission cards ---------- */
+@keyframes mis-in { from { opacity: 0; transform: translateY(40px); } to { opacity: 1; transform: none; } }
+.mis-in { animation: mis-in .8s cubic-bezier(.2, .9, .25, 1.1) both; animation-delay: calc(var(--i) * .14s); }
+@media (prefers-reduced-motion: reduce) { .mis-in { animation: none; } }
+
+/* ---------- Services: floating 3D flip cards ---------- */
+@keyframes svc-float-a { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-16px); } }
+@keyframes svc-float-b { 0%, 100% { transform: translateY(-8px); } 50% { transform: translateY(-24px); } }
+@keyframes svc-float-c { 0%, 100% { transform: translateY(-4px); } 50% { transform: translateY(-19px); } }
+@keyframes svc-enter { from { opacity: 0; transform: translateY(60px) scale(.92); } to { opacity: 1; transform: translateY(0) scale(1); } }
+.svc-scene { perspective: 1200px; }
+.svc-scene:nth-child(1) { animation: svc-enter .8s cubic-bezier(.2, .9, .25, 1.1) both, svc-float-a 6.4s ease-in-out .8s infinite; }
+.svc-scene:nth-child(2) { animation: svc-enter .8s cubic-bezier(.2, .9, .25, 1.1) .12s both, svc-float-b 7.6s ease-in-out .92s infinite; }
+.svc-scene:nth-child(3) { animation: svc-enter .8s cubic-bezier(.2, .9, .25, 1.1) .24s both, svc-float-c 5.8s ease-in-out 1.04s infinite; }
+.svc-scene:hover, .svc-scene:focus-visible, .svc-scene.flipped { animation-play-state: paused; }
+.svc-card { transform-style: preserve-3d; transition: transform 1s cubic-bezier(.175, .885, .32, 1.275); }
+.svc-face { backface-visibility: hidden; -webkit-backface-visibility: hidden; }
+.svc-back { transform: rotateY(180deg); }
+.svc-scene.flipped .svc-card { transform: rotateY(180deg) translateZ(30px); }
+.svc-hint::after { content: 'แตะเพื่อพลิกดูรายละเอียด'; }
+.svc-img > .lc { color: #fff; opacity: .92; stroke-width: 1.4; }
+@media (hover: hover) {
+  .svc-scene:hover .svc-card, .svc-scene:focus-visible .svc-card { transform: rotateY(180deg) translateZ(30px); }
+  .svc-hint::after { content: 'เลื่อนเมาส์เพื่อดูรายละเอียด'; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .svc-scene { animation: none !important; }
+  .svc-grid { transform: none !important; }
+  .svc-card { transition: none; }
+}
+
+/* ---------- Products ---------- */
+.prod-glass {
+  background: color-mix(in oklab, white 62%, transparent);
+  backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+.prod-gcard:hover .prod-glass { transform: scale(1.03); background: color-mix(in oklab, white 72%, transparent); }
+.prod-rua {
+  background: color-mix(in oklab, white 14%, transparent);
+  backdrop-filter: blur(20px) saturate(180%); -webkit-backdrop-filter: blur(20px) saturate(180%);
+}
+.prod-rua:hover, .prod-rua:focus-visible { background: color-mix(in oklab, white 22%, transparent); border-color: rgba(255, 255, 255, .7); transform: scale(1.02); }
+/* Same dark blur as HoverVeil / the album tiles (mook 2026-10-30). */
+.prod-scrim { position: absolute; inset: 0; background: rgba(0, 0, 0, .15); opacity: 0; transition: opacity .4s ease; display: flex; align-items: center; justify-content: center; backdrop-filter: blur(10px) brightness(.6); }
+.prod-pplay { width: 62px; height: 62px; border-radius: 50%; background: #27AE97; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 22px; padding-left: 4px; box-shadow: var(--shadow-card); transform: scale(.8); transition: transform .3s cubic-bezier(.34, 1.56, .64, 1), background-color .2s; }
+.prod-rvplay { position: absolute; left: 50%; top: 50%; width: 48px; height: 48px; margin: -24px 0 0 -24px; border-radius: 50%; background: #27AE97; color: #fff; display: flex; align-items: center; justify-content: center; font-size: 17px; padding-left: 3px; opacity: 0; transform: scale(.8); transition: opacity .25s, transform .3s cubic-bezier(.34, 1.56, .64, 1), background-color .2s; }
+.prod-pplay:hover, .prod-rvplay:hover { background: #12986F; }
+.prod-pcard:hover .prod-scrim, .prod-pcard:focus-visible .prod-scrim { opacity: 1; }
+.prod-pcard:hover .prod-pplay, .prod-pcard:focus-visible .prod-pplay { transform: scale(1); }
+.prod-rvtile:hover .prod-rvplay, .prod-rvtile:focus-visible .prod-rvplay { opacity: 1; transform: scale(1); }
+.prod-rvtile:hover .prod-rvthumb img { transform: scale(1.05); }
+@media (hover: none) {
+  .prod-scrim { opacity: 1; background: rgba(14, 26, 43, .18); backdrop-filter: none; align-items: flex-end; justify-content: flex-end; padding: 12px; }
+  .prod-pplay { width: 42px; height: 42px; font-size: 15px; transform: none; }
+  .prod-rvplay { opacity: 1; transform: none; width: 38px; height: 38px; font-size: 14px; margin: -19px 0 0 -19px; }
+}
+.prod-pplay .lc, .prod-rvplay .lc { fill: currentColor; }
+.prod-pplay .lc { width: 26px; height: 26px; }
+
+
+/* With the trailing cursor label (HoverCursor) the centred play button would repeat it on mouse devices. */
+@media (hover: hover) and (pointer: fine) { .prod-pcard .prod-pplay { display: none; } }

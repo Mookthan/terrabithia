@@ -1,0 +1,18 @@
+/* "+N เหรียญ" chip: rises in, holds, fades out. */
+.coin-pop { animation: coinPop 1.8s cubic-bezier(.22, 1, .36, 1) both; }
+@keyframes coinPop {
+  0% { opacity: 0; translate: 0 10px; scale: .9; }
+  15%, 75% { opacity: 1; translate: 0 0; scale: 1; }
+  100% { opacity: 0; translate: 0 -8px; }
+}
+@media (prefers-reduced-motion: reduce) { .coin-pop { animation: none; } }
+
+/* Reward gift card: two half-circle notches punched where the card face meets the details (the dashed tear line). */
+.reward-ticket {
+  --cut: 136px;
+  -webkit-mask: radial-gradient(circle 9px at 0 var(--cut), #0000 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 9px at 100% var(--cut), #0000 98%, #000) right / 51% 100% no-repeat;
+  mask: radial-gradient(circle 9px at 0 var(--cut), #0000 98%, #000) left / 51% 100% no-repeat,
+    radial-gradient(circle 9px at 100% var(--cut), #0000 98%, #000) right / 51% 100% no-repeat;
+}
+@media (max-width: 480px) { .reward-ticket { --cut: 112px; } }

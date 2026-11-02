@@ -1,0 +1,55 @@
+/* News feature: effects Tailwind can't express cleanly (tilt, keyframes). */
+
+/* --- news card: 3D tilt that follows the pointer (vars set from JS) --- */
+.news-tilt {
+  --rx: 0deg; --ry: 0deg;
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transition: transform .55s cubic-bezier(.34, 1.3, .5, 1), box-shadow .3s;
+  will-change: transform;
+}
+.news-tilt.tilting { transition: transform .09s linear, box-shadow .3s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .news-tilt, .news-tilt .news-img { transition: none; }
+}
+
+/* icon on a gradient (no photo) image */
+.news-noimg-ic { color: #fff; opacity: .92; stroke-width: 1.4; }
+
+/* --- heart buttons --- */
+.news-heart .lc { transition: transform .25s; }
+.news-heart:hover .lc { transform: scale(1.12); }
+
+/* double-tap heart burst on the article photo */
+.news-bigheart { position: absolute; width: 0; height: 0; pointer-events: none; z-index: 5; }
+.news-bigheart svg {
+  position: absolute; width: 110px; height: 110px; left: -55px; top: -55px;
+  fill: #fff; stroke: #fff; filter: drop-shadow(0 4px 14px rgba(0, 0, 0, .35));
+  animation: newsBigHeart .85s ease-out forwards;
+}
+@keyframes newsBigHeart {
+  0% { transform: scale(0); opacity: 0; } 15% { transform: scale(1.25); opacity: 1; } 30% { transform: scale(.95); }
+  45% { transform: scale(1.05); } 75% { transform: scale(1); opacity: 1; } 100% { transform: scale(1.15) translateY(-30px); opacity: 0; }
+}
+
+/* --- comments fold --- */
+.news-fold { display: grid; grid-template-rows: 0fr; transition: grid-template-rows var(--acc-dur) var(--acc-ease); }
+.news-fold.open { grid-template-rows: 1fr; }
+.news-fold > div { min-height: 0; overflow: hidden; }
+
+
+@media (prefers-reduced-motion: reduce) {
+  .news-bigheart svg { animation-duration: .01s; }
+  .news-fold { transition: none; }
+}
+
+/* --- hero slider --- */
+.news-herotrack { transition: transform .35s cubic-bezier(.22, 1, .36, 1); }
+.news-herotrack.dragging { transition: none; }
+
+/* emoji reaction bar + picked emoji pop */
+.rx-pop { animation: rx-pop .18s ease-out; transform-origin: bottom left; }
+@keyframes rx-pop { from { opacity: 0; transform: translateY(6px) scale(.92); } }
+.rx-pick { display: inline-block; animation: rx-pick .35s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes rx-pick { from { transform: scale(.4); } }
+@media (prefers-reduced-motion: reduce) { .rx-pop, .rx-pick { animation: none; } }

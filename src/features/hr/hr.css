@@ -1,0 +1,60 @@
+/* ---------- HR data tables (cards on phones) ---------- */
+.hr-twrap { overflow-x: auto; border-radius: 14px; box-shadow: var(--shadow-card); background: #fff; margin-bottom: 14px; }
+.hr-table { width: 100%; border-collapse: collapse; color: #173F52; font-size: 16px; min-width: 420px; }
+.hr-table thead th { background: #CFE3FC; font-weight: 600; font-size: 17px; padding: 13px 16px; text-align: center; }
+.hr-table tbody th, .hr-table tbody td { padding: 13px 16px; text-align: center; border-top: 1px solid #E1ECF9; }
+.hr-table tbody th { background: #E6F1FE; font-weight: 600; white-space: nowrap; }
+.hr-table tbody tr:nth-child(even) td { background: #F5F9FF; }
+@media (max-width: 700px) {
+  .hr-twrap { overflow: visible; background: none; box-shadow: none; border-radius: 0; }
+  .hr-table, .hr-table tbody, .hr-table tr, .hr-table th, .hr-table td { display: block; width: 100%; min-width: 0; }
+  .hr-table thead { display: none; }
+  .hr-table tbody tr { background: #fff; border-radius: 14px; box-shadow: var(--shadow-card); margin-bottom: 12px; overflow: hidden; }
+  .hr-table tbody th { text-align: left; white-space: normal; padding: 12px 16px; border: 0; font-size: 16px; background: #CFE3FC; }
+  .hr-table tbody td, .hr-table tbody tr:nth-child(even) td { display: flex; justify-content: space-between; align-items: baseline; gap: 14px; text-align: right; padding: 11px 16px; background: #fff; font-size: 15px; }
+  .hr-table tbody td::before { content: attr(data-label); color: #626E67; font-weight: 500; text-align: left; flex: 0 1 46%; }
+}
+
+/* ---------- "l2" card layout: small card, tall card, small card ---------- */
+.hr-l2 > :nth-child(1) { grid-column: 1; grid-row: 1; }
+.hr-l2 > :nth-child(2) { grid-column: 2; grid-row: 1 / 3; }
+.hr-l2 > :nth-child(3) { grid-column: 1; grid-row: 2; }
+@media (max-width: 700px) { .hr-l2 > :nth-child(n) { grid-column: auto; grid-row: auto; } }
+
+/* ---------- Announcement cards rise in ---------- */
+@keyframes hr-nin { from { opacity: 0; transform: translateY(10px); } }
+.hr-ncard { animation: hr-nin .5s cubic-bezier(.22,1,.36,1) backwards; animation-delay: calc(var(--i) * 70ms); }
+
+/* ---------- Content swap animation (added when the selection changes) ---------- */
+@keyframes hr-in { from { opacity: 0; translate: 0 10px; } to { opacity: 1; translate: none; } }
+.hr-in > * { animation: hr-in .38s cubic-bezier(.22,1,.36,1) backwards; }
+.hr-in > *:nth-child(2) { animation-delay: .04s; }
+.hr-in > *:nth-child(3) { animation-delay: .08s; }
+.hr-in > *:nth-child(n+4) { animation-delay: .12s; }
+.hr-in .hr-card, .hr-in .hr-ncard, .hr-in .hr-sec ~ * { animation: hr-in .42s cubic-bezier(.22,1,.36,1) backwards; }
+.hr-in .hr-grid > :nth-child(1), .hr-in .hr-nlist > :nth-child(1) { animation-delay: .08s; }
+.hr-in .hr-grid > :nth-child(2), .hr-in .hr-nlist > :nth-child(2) { animation-delay: .14s; }
+.hr-in .hr-grid > :nth-child(3), .hr-in .hr-nlist > :nth-child(3) { animation-delay: .2s; }
+.hr-in .hr-grid > :nth-child(4), .hr-in .hr-nlist > :nth-child(4) { animation-delay: .26s; }
+.hr-in .hr-grid > :nth-child(n+5), .hr-in .hr-nlist > :nth-child(n+5) { animation-delay: .3s; }
+
+@media (prefers-reduced-motion: reduce) {
+  .hr-ncard { animation: none; }
+  .hr-in > *, .hr-in * { animation: none !important; }
+}
+
+/* ---------- Post opened from the calendar or the green announcements: glow pulses twice ---------- */
+@keyframes hr-flash { 0%, 100% { box-shadow: var(--shadow-card); } 35% { box-shadow: 0 0 0 3px rgba(39, 174, 151, .6), var(--shadow-pop); } }
+.hr-flash { animation: hr-flash 1.4s ease-in-out .45s 2; }
+@media (prefers-reduced-motion: reduce) { .hr-flash { animation: none; box-shadow: 0 0 0 3px rgba(39, 174, 151, .6); } }
+
+/* ---------- Document with a poster (Friend get Friend): poster beside the details, stacked on phones ---------- */
+.hr-poster { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 26px; align-items: start; }
+/* Stacks by the doc's own width, so it also fits inside an announcement card. */
+.hr-doc { container-type: inline-size; }
+@container (max-width: 900px) { .hr-poster { grid-template-columns: 1fr; } .hr-poster > button { max-width: 420px; } }
+
+/* Search results fade in as the rail swaps from groups to hits. */
+@keyframes hr-sres-in { from { opacity: 0; translate: 0 6px; } }
+.hr-sres { animation: hr-sres-in .25s ease both; }
+@media (prefers-reduced-motion: reduce) { .hr-sres { animation: none; } }

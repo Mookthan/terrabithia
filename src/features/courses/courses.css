@@ -1,0 +1,56 @@
+/* ---------- Progress gauges (animated conic ring) ---------- */
+@property --crs-cp { syntax: '<number>'; inherits: false; initial-value: 0; }
+/* The ring fill is driven from JS (useCountUp sets --v) so it moves with the counting %. */
+.crs-gauge {
+  --crs-cp: var(--v);
+  width: 112px; height: 112px; border-radius: 50%; position: relative;
+  display: grid; place-items: center;
+  background: conic-gradient(var(--c) calc(var(--crs-cp) * 1%), #fff 0);
+}
+.crs-gauge::before { content: ""; position: absolute; inset: 11px; border-radius: 50%; background: #F3EFE4; }
+.crs-gauge span { position: relative; font-size: 22px; color: var(--c); font-weight: 500; }
+@media (max-width: 640px) {
+  .crs-gauge { width: min(96px, 25vw); height: min(96px, 25vw); }
+  .crs-gauge::before { inset: calc(min(96px, 25vw) * .1); }
+  .crs-gauge span { font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) { .crs-gauge { animation: none; } }
+
+/* ---------- My-courses table (stacked cards on phones) ---------- */
+.crs-mtr { display: grid; grid-template-columns: 70px 1fr 140px 150px 150px; align-items: center; padding: 12px 16px; font-size: 12.5px; color: #173F52; }
+.crs-mtr + .crs-mtr { border-top: 1px solid #f1efe8; }
+.crs-mtr.crs-mth { background: #DDDBD2; font-weight: 600; }
+@media (max-width: 640px) {
+  .crs-mtr.crs-mth { display: none; }
+  .crs-mtr {
+    background: #fff; border-radius: 14px; box-shadow: var(--shadow-card); padding: 14px;
+    grid-template-columns: 26px 1fr auto; grid-template-areas: "no name name" ". type st" ". per per";
+    gap: 8px 10px; font-size: 13.5px;
+  }
+  .crs-mtr + .crs-mtr { border-top: 0; }
+  .crs-mtr > span:nth-child(1) { grid-area: no; opacity: .6; }
+  .crs-mtr > span:nth-child(2) { grid-area: name; font-weight: 600; line-height: 1.45; }
+  .crs-mtr > span:nth-child(3) { grid-area: type; }
+  .crs-mtr > span:nth-child(4) { grid-area: per; font-size: 12px; opacity: .7; }
+  .crs-mtr > span:nth-child(5) { grid-area: st; justify-self: end; font-size: 12.5px; }
+}
+
+
+/* ---------- Detail: frosted info card ---------- */
+.crs-glass {
+  background: color-mix(in oklab, white 86%, transparent);
+  -webkit-backdrop-filter: blur(18px) saturate(160%); backdrop-filter: blur(18px) saturate(160%);
+}
+
+/* --- catalogue card: course length slides open on hover (same motion as the news cards) --- */
+.crs-meta { display: grid; grid-template-rows: 0fr; opacity: 0; transition: grid-template-rows .32s ease, opacity .32s; }
+.crs-meta > div { overflow: hidden; min-height: 0; padding-top: 0; transition: padding .32s; }
+.crs-card:hover .crs-meta, .crs-card:focus-visible .crs-meta { grid-template-rows: 1fr; opacity: 1; }
+.crs-card:hover .crs-meta > div, .crs-card:focus-visible .crs-meta > div { padding-top: 10px; }
+@media (hover: none) {
+  .crs-meta { grid-template-rows: 1fr; opacity: 1; }
+  .crs-meta > div { padding-top: 10px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .crs-meta, .crs-meta > div { transition: none; }
+}

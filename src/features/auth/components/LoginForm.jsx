@@ -6,6 +6,7 @@ import DemoErrorRow from './DemoErrorRow';
 import Field from './Field';
 import Notice from './Notice';
 import SubmitButton from './SubmitButton';
+import PrivacyNote from './PrivacyNote';
 
 /** E-mail / password sign-in with remember-me, forgot-password link and demo error switches. */
 export default function LoginForm({ form, setForm, error, notice, demoErr, onDemoErr, onSubmit, onForgot, pwRef }) {
@@ -17,7 +18,7 @@ export default function LoginForm({ form, setForm, error, notice, demoErr, onDem
       <Field
         label="Email"
         icon={User}
-        placeholder="Email"
+        placeholder="name@terrabit.co.th"
         autoComplete="username"
         value={form.e}
         onChange={(ev) => setForm({ ...form, e: ev.target.value })}
@@ -46,7 +47,8 @@ export default function LoginForm({ form, setForm, error, notice, demoErr, onDem
         <a onClick={onForgot} className={`${TEXT_LINK} font-semibold`}>ลืมรหัสผ่าน ?</a>
       </div>
       <SubmitButton onClick={onSubmit}>เข้าสู่ระบบ</SubmitButton>
-      <div className="mb-[6px] text-[11.5px] leading-[1.6] text-muted">ใช้ Email ของบริษัทเท่านั้น หากยังไม่มี Account<br />กรุณาติดต่อ HR หรือ Admin</div>
+      <div className="mb-[6px] text-[11.5px] leading-[1.6] text-muted">ยังไม่มีบัญชี? ติดต่อ HR หรือ Admin</div>
+      <PrivacyNote />
       <DemoErrorRow value={demoErr} onChange={onDemoErr} />
     </>
   );

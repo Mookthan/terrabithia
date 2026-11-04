@@ -199,3 +199,13 @@ Object.assign(I18N_EN, {
 'ข้อมูลทั่วไป':'General','ความถนัด':'Skills','ความสนใจและอัลบั้ม':'Interests & album','ความสนใจ':'Interests','หมวดข้อมูล':'Sections',
 'คำขอบคุณ':'Thank-yous','ช่วยงาน':'Helped out','สอนงาน':'Taught me','ทีมเวิร์ก':'Teamwork','ทำเกินหน้าที่':'Went the extra mile','ใจดี':'Kindness','ขอบคุณเรื่อง':'Thanks for','ย่อ':'Show less','ส่ง':'Send',
 });
+Object.assign(I18N_EN, {
+'การเข้าใช้งานถือว่ารับทราบ':'By signing in you acknowledge the','นโยบายความเป็นส่วนตัว':'Privacy Policy','เว็บนี้เก็บข้อมูลอะไรบ้าง':'What this site keeps',
+'ข้อมูลพนักงานจาก EzyHR เช่น ชื่อ ตำแหน่ง แผนก และวันลาคงเหลือ':'Staff data from EzyHR, such as name, position, department and leave balance',
+'บันทึกการใช้งาน เช่น หน้าที่เปิด เวลาที่ใช้ การดาวน์โหลดไฟล์ และการเปิดดูผลประเมิน เก็บไว้ 365 วัน':'A usage log, such as pages opened, time spent, file downloads and evaluation views, kept for 365 days',
+'สิ่งที่คุณเพิ่มเอง เช่น รูป ความคิดเห็น รีแอค การ์ดวันเกิด และเหรียญ':'What you add yourself, such as photos, comments, reactions, birthday cards and coins',
+'ใช้เพื่อดูแลระบบและความปลอดภัยของข้อมูลบริษัทเท่านั้น บันทึกรายบุคคลมีแค่ Super Admin ที่เปิดดูได้ หากต้องการขอดู แก้ไข หรือสอบถามเรื่องข้อมูลของคุณ ติดต่อ HR':'It is used only to run the site and keep company data safe. Only the Super Admin can view an individual\'s log. To see, correct or ask about your data, contact HR.',
+});
+Object.assign(I18N_EN, {
+'ยังไม่มีบัญชี? ติดต่อ HR หรือ Admin':'No account yet? Contact HR or Admin',
+});

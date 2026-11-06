@@ -67,3 +67,15 @@ export function greet(id, { text, sticker }) {
   set({ greets: { ...state.greets, [id]: [...(state.greets[id] || []), g] } });
   earn('comment', `welcome:${id}`);
 }
+
+/** Edit the text of one of my greetings (stickers can only be deleted). */
+export function editGreet(id, gid, text) {
+  set({ greets: { ...state.greets, [id]: (state.greets[id] || []).map((g) => (g.id === gid ? { ...g, text, edited: true } : g)) } });
+}
+
+/** Delete one of my greetings; when none of mine is left on the post, its comment coin goes back. */
+export function removeGreet(id, gid) {
+  const left = (state.greets[id] || []).filter((g) => g.id !== gid);
+  set({ greets: { ...state.greets, [id]: left } });
+  if (!left.some((g) => g.me)) refund('comment', `welcome:${id}`);
+}

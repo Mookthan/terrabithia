@@ -11,7 +11,7 @@ import Pager from './Pager';
 import CommentForm from './CommentForm';
 
 /** Course page: blurred hero, learning outcomes, reviews, comment form and a sticky info card. */
-export default function CourseDetail({ index, reviews, onAddReview, onBack }) {
+export default function CourseDetail({ index, reviews, onAddReview, onEditReview, onRemoveReview, onBack }) {
   const course = COURSES[index];
   const [page, setPage] = useState(1);
 
@@ -29,7 +29,7 @@ export default function CourseDetail({ index, reviews, onAddReview, onBack }) {
             <DetailSection title="สิ่งที่จะได้เรียนรู้"><LearnList /></DetailSection>
             <DetailSection title="รีวิวและความคิดเห็นทั้งหมด"><RatingSummary /></DetailSection>
             <div>
-              {reviews.map((r, i) => <ReviewCard key={`${r.n}-${r.d}-${reviews.length - i}`} review={r} />)}
+              {reviews.map((r, i) => <ReviewCard key={r.id || `${r.n}-${r.d}-${reviews.length - i}`} review={r} onEdit={onEditReview} onRemove={onRemoveReview} />)}
               <Pager page={page} onPage={setPage} />
             </div>
             <DetailSection title="ความคิดเห็น">

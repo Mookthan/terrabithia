@@ -1,18 +1,20 @@
 import { useEffect, useRef, useState } from 'react';
 import { ME } from '@/data/me';
-import { addComment, useNewsState } from '../newsStore';
+import { addComment, editComment, removeComment, useNewsState } from '../newsStore';
 import { CommentAvatar } from './LikersModal';
 import '../news.css';
 import { Inbox } from 'lucide-react';
 import EmptyState from '@/components/ui/EmptyState';
+import OwnActions from '@/components/ui/own/OwnActions';
+import EditText from '@/components/ui/own/EditText';
 
-/** Foldable comment list + composer for one article. */
+/** Foldable comment list + composer for one article. The list grows with the page, no inner scroll (mook 2026-11-06). */
 export default function Comments({ index, open }) {
   const { comments } = useNewsState();
   const list = comments[index] || [];
   const [text, setText] = useState('');
+  const [editing, setEditing] = useState(null);
   const inputRef = useRef(null);
-  const listRef = useRef(null);
 
   useEffect(() => {
     if (!open) return undefined;
@@ -25,21 +27,26 @@ export default function Comments({ index, open }) {
     if (!t) return;
     addComment(index, t);
     setText('');
-    requestAnimationFrame(() => { const l = listRef.current; if (l) l.scrollTop = l.scrollHeight; });
   };
 
   return (
     <div className={`news-fold ${open ? 'open' : ''}`}>
       <div>
         <div className="mb-[10px] mt-[6px] rounded-box bg-white px-[18px] py-4 shadow-card">
-          <div ref={listRef} className="mb-[14px] flex max-h-[260px] flex-col gap-[14px] overflow-auto">
+          <div className="mb-[14px] flex flex-col gap-[14px]">
             {list.length ? list.map((c, k) => (
-              <div key={k} className="flex gap-[10px]">
+              <div key={c.id || k} className="flex gap-[10px]">
                 <CommentAvatar name={c.n} />
-                <div>
-                  <b className="mr-2 text-[13.5px] text-ink">{c.n}</b>
-                  <span className="text-[11.5px] text-muted">{c.d}</span>
-                  <p className="mt-[2px] text-[13.5px] leading-[1.55] text-ink">{c.t}</p>
+                <div className="min-w-0 flex-1">
+                  <div className="flex flex-wrap items-center gap-x-2">
+                    <b className="text-[13.5px] text-ink">{c.n}</b>
+                    <span className="text-[11.5px] text-muted">{c.d}</span>
+                    {c.edited && <span className="text-[11.5px] text-muted">· แก้ไขแล้ว</span>}
+                    {c.me && editing !== c.id && <OwnActions onEdit={() => setEditing(c.id)} onDelete={() => removeComment(index, c.id)} className="ml-auto" />}
+                  </div>
+                  {editing === c.id
+                    ? <EditText value={c.t} onSave={(t) => { editComment(index, c.id, t); setEditing(null); }} onCancel={() => setEditing(null)} />
+                    : <p className="mt-[2px] text-[13.5px] leading-[1.55] text-ink">{c.t}</p>}
                 </div>
               </div>
             )) : <EmptyState icon={Inbox} className="justify-start py-[6px] text-[13px]">ยังไม่มีความคิดเห็น เป็นคนแรกที่แสดงความคิดเห็นได้เลย</EmptyState>}

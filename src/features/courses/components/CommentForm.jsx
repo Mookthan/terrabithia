@@ -22,6 +22,7 @@ export default function CommentForm({ onSubmit }) {
     if (!chips.length) { setErr('โปรดเลือกอย่างน้อย 1 ข้อ'); return; }
     setErr('');
     onSubmit({
+      id: `r${Date.now()}`, me: true,
       n: ME.fullName, r: MY_ROLE, d: '09 Oct 2026', s: rate,
       h: LIKE_CHIPS.filter((c) => chips.includes(c)).join(','), x: text.trim() || '(ไม่มีข้อความ)', c: '#E9F3F1', a: ME.photo,
     });

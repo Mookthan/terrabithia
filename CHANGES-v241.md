@@ -339,3 +339,19 @@ The book itself is unchanged: the owner's book opens with all cards heaped at on
 - V271 (2026-11-05): certificate cards open a big certificate view (CertViewer; uploaded image or a drawn certificate until real scans); only the owner gets ดาวน์โหลด, others view only; Org Chart certificate titles are green links to the same view (mook).
 - V272 (2026-11-05): certificate cards lift 4px with shadow-pop on hover, like the course cards (mook).
 - V273 (2026-11-06): removed the Tags row (#Terrabit #category #News2026) from the news article page; tags were green but not clickable (mook).
+- V274 (2026-11-06): every white popup (org card, JD/KPI/eval history, file details, eval password, poll, redeem, likers, knowledge preview/sent, memories, birthday sheets, help) gets the 6px mint strip on top like the header and phone sheets; shared class .pop-strip in index.css (mook).
+- V275 (2026-11-06): mint strip on white popups removed again; back to V273 look (mook: ไม่เอา).
+- V276 (2026-11-06): Terby page loader (components/ui/PageLoader) as the route Suspense fallback; shows only when a page takes over 300ms, Terby bobs + 'กำลังโหลด...' (mook).
+- V277 (2026-11-06): page loader now centred on the screen; Terby builds itself from 16 pieces that fly in, holds, scatters and rebuilds (mook: ค่อยๆต่อตัว).
+- V278 (2026-11-06): Terby page loader removed (mook: keep the idea for later); code parked at parked/terby-page-loader; loading shows nothing again, same as V273.
+- V279 (2026-11-06): daily guess-who game (features/guess): 'ทายใครเอ่ยวันนี้ ›' in the home CAC team card header opens a popup with up to 3 clues (likes / skills / position), 4 names, right answer earns 5 coins once a day (EARN_RULES guess), reveal links to the person's Org Chart card (mook).
+- V280 (2026-11-06): guess-who has two games: home CAC team card = people in my division (CAC), Organizational Chart heading on /about/profile = whole company; each once a day, right answer 5 coins per game (guess daily 2) (mook).
+- V281 (2026-11-06): เกมทายใครเอ่ยทั้งบริษัทมีคำใบ้ข้อ 4 'แผนก' (dept เช่น CCM · Operation Dept.) เป็นข้อสุดท้าย เกมในฝ่ายไม่มี
+- V282 (2026-11-06): เกมทายใครเอ่ยเหลือเกมเดียว ทายทั้งบริษัท ลิงก์อยู่ที่หัวข้อ Organizational Chart ที่เดียว (เอาออกจากการ์ดทีมงานหน้าแรก, ไม่มีโหมดในฝ่าย) ตอบถูก 5 เหรียญ วันละครั้ง
+- V283 (2026-11-06): แถบประกาศใต้ header มี 3 แบบ (urgent แดง งดใช้ / fixed เขียว ใช้ได้แล้ว / today น้ำเงิน วันนี้ในบริษัท, features/urgent/kinds.js) สลับกันทุก 6 วิ มีจุดบอกลำดับ หยุดเมื่อเอาเมาส์วาง รับทราบทีละอัน และแสดงในกล่องประกาศเขียวพร้อมกัน (URGENT_ANN, ป้ายตามแบบ) ไม่ต้องรอหมดเวลาแล้ว
+- V284 (2026-11-06): mook ไม่เอา V283 คืนแถบประกาศด่วนและกล่องเขียวกลับเป็นแบบ V282 (ไม่มี 3 แบบ ไม่สลับ ไม่ขึ้นกล่องเขียวพร้อมกัน)
+- V285 (2026-11-06): แก้ไข/ลบคอมเมนต์ของตัวเอง (components/ui/own/OwnActions ⋯ เมนู แก้ไข/ลบ + ถามยืนยันในที่ ไม่เด้ง popup, EditText) ใช้กับคอมเมนต์ข่าว คำทักทายประกาศต้อนรับ (สติกเกอร์ลบได้อย่างเดียว) และรีวิวคอร์ส ขึ้น '· แก้ไขแล้ว' ลบแล้วคืนเหรียญคอมเมนต์ (ข่าว earn ref news:id, ทักทายคืนเมื่อไม่เหลือของเราในโพสต์)
+- V286 (2026-11-06): คอมเมนต์ข่าวไม่มี scroll ในกล่องแล้ว รายการยาวตามหน้า (mook)
+- V287 (2026-11-06): หน้าอ่านข่าวเอาป้าย 'N% อ่านจบ' ออก (เหลือแถบเขียวใต้ header)
+- V288 (2026-11-06): removed news reading progress bar (ReadProgress.jsx deleted). i18n: no mixed TH/EN lines; engine falls back to the Thai line when any Thai is left after partial replace; new lib/i18n/rules.js (I18N_RULES regex templates); dictionary blocks for bell, home, HR, profile, rewards, Org Chart interests/KPI/JD.
+- V289 (2026-11-06): leave type renamed to 'วันลา My work outside' (matches EzyHR; covers booths/client visits off-site), HR rules card heading too.

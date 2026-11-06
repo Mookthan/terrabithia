@@ -44,10 +44,23 @@ export const toggleLike = (i, def = DEFAULT_REACTION) => react(i, state.liked[i]
 export function likeOnce(i) {
   if (!state.liked[i]) react(i, '❤️');
 }
+let commentSeq = 0;
 export function addComment(i, text) {
-  const list = [...(state.comments[i] || []), { n: 'มุก', t: text, d: 'เมื่อสักครู่' }];
+  const id = `c${(commentSeq += 1)}`;
+  const list = [...(state.comments[i] || []), { id, me: true, n: 'มุก', t: text, d: 'เมื่อสักครู่' }];
   set({ comments: { ...state.comments, [i]: list } });
-  earn('comment');
+  earn('comment', `news:${id}`);
+}
+
+/** Edit the text of one of my own comments. */
+export function editComment(i, id, text) {
+  set({ comments: { ...state.comments, [i]: (state.comments[i] || []).map((c) => (c.id === id ? { ...c, t: text, edited: true } : c)) } });
+}
+
+/** Delete one of my own comments; the coins it earned go back (mook 2026-11-06: no comment-and-delete farming). */
+export function removeComment(i, id) {
+  set({ comments: { ...state.comments, [i]: (state.comments[i] || []).filter((c) => c.id !== id) } });
+  refund('comment', `news:${id}`);
 }
 
 /** Pin or unpin story i. Returns false (and changes nothing) when MAX_PINS are already pinned. */

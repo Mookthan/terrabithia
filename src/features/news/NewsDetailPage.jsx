@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { OUTLINE_HOVER } from '@/components/ui/TextButton';
@@ -8,7 +8,6 @@ import { ARTICLE_OUTRO, NEWS, fullTitle, publisher, wrapIndex } from './data';
 import ArticleImage from './components/ArticleImage';
 import NewsActions from './components/NewsActions';
 import OtherNews from './components/OtherNews';
-import ReadProgress from './components/ReadProgress';
 import { addView, useNewsState, viewCount } from './newsStore';
 
 const chev = 'lc !h-[1.05em] !w-[1.05em] !align-[-.2em]';
@@ -18,7 +17,6 @@ const navBtn = 'cursor-pointer rounded-ctl px-[18px] py-[9px] text-[13px]';
 export default function NewsDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const bandRef = useRef(null);
   const idx = Number.parseInt(id, 10);
   const n = NEWS[idx];
   const { views } = useNewsState();
@@ -55,8 +53,7 @@ export default function NewsDetailPage() {
           </div>
         </div>
       </div>
-      <OtherNews ref={bandRef} current={idx} />
-      <ReadProgress endRef={bandRef} />
+      <OtherNews current={idx} />
     </>
   );
 }

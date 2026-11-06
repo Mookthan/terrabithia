@@ -15,7 +15,7 @@ import CloseButton from '@/components/ui/CloseButton';
 
 const ctlBtn = 'cursor-pointer rounded-ctl border-0 bg-none px-[10px] py-[7px] text-[13px] text-teal-hover transition-colors hover:bg-teal-veil max-[640px]:px-[7px] max-[640px]:py-[6px] max-[640px]:text-xs';
 
-/** Org chart of the user's own team (CAC) with search, department filter and fullscreen. */
+/** Org chart of the user's own team (CAC) with search, department filter and fullscreen; the header links to the daily guess-who game (mook 2026-11-06). */
 export default function CacTeamCard() {
   const navigate = useNavigate();
   const boxRef = useRef(null);

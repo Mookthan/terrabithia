@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronRight, MessageCircle, SendHorizontal } from 'lucide-react';
 import Fold from '@/components/ui/Fold';
-import { QUICK_GREETINGS, STICKERS, WELCOME_CHEERS, cheer, greet, useWelcome } from './welcomeStore';
+import OwnActions from '@/components/ui/own/OwnActions';
+import EditText from '@/components/ui/own/EditText';
+import { QUICK_GREETINGS, STICKERS, WELCOME_CHEERS, cheer, editGreet, greet, removeGreet, useWelcome } from './welcomeStore';
 
 /** Round photo, or the first letter of the nickname on a brand gradient when there is no photo yet. */
 function Face({ photo, nick, size }) {
@@ -16,15 +18,25 @@ function Face({ photo, nick, size }) {
 }
 
 /** One greeting: who wrote it and either the text or a sticker. */
-function Greeting({ g }) {
+/** One greeting; on my own: ⋯ with แก้ไข (text only) and ลบ (mook 2026-11-06). */
+function Greeting({ g, postId }) {
+  const [editing, setEditing] = useState(false);
+  const sticker = g.sticker != null;
   return (
     <li className="flex items-start gap-2">
       <Face photo={g.photo} nick={g.nick} size={28} />
-      <div className="min-w-0">
-        <b className="text-[12px] font-semibold text-ink">{g.nick}{g.owner && <span className="ml-1 rounded-full bg-teal-soft px-1.5 py-px text-[10.5px] font-semibold text-teal-hover">เจ้าของโพสต์</span>}</b>
-        {g.sticker != null
-          ? <img src={STICKERS[g.sticker]} alt="สติกเกอร์" className="mt-0.5 h-16 w-16 object-contain" />
-          : <p className="m-0 w-fit rounded-box bg-white px-3 py-1.5 text-[12.5px] leading-[1.6] text-ink">{g.text}</p>}
+      <div className="min-w-0 flex-1">
+        <div className="flex flex-wrap items-center gap-x-1.5">
+          <b className="text-[12px] font-semibold text-ink">{g.nick}{g.owner && <span className="ml-1 rounded-full bg-teal-soft px-1.5 py-px text-[10.5px] font-semibold text-teal-hover">เจ้าของโพสต์</span>}</b>
+          {g.edited && <span className="text-[11px] text-muted">· แก้ไขแล้ว</span>}
+          {g.me && !editing && (
+            <OwnActions label="คำทักทาย" onEdit={sticker ? undefined : () => setEditing(true)} onDelete={() => removeGreet(postId, g.id)} className="ml-auto" />
+          )}
+        </div>
+        {sticker && <img src={STICKERS[g.sticker]} alt="สติกเกอร์" className="mt-0.5 h-16 w-16 object-contain" />}
+        {!sticker && (editing
+          ? <EditText value={g.text} rows={1} onSave={(t) => { editGreet(postId, g.id, t); setEditing(false); }} onCancel={() => setEditing(false)} />
+          : <p className="m-0 w-fit rounded-box bg-white px-3 py-1.5 text-[12.5px] leading-[1.6] text-ink">{g.text}</p>)}
       </div>
     </li>
   );
@@ -82,7 +94,7 @@ export default function WelcomeCard({ id, w, onMore, startOpen = false }) {
       {!onMore && (
       <Fold open={open}>
         <div className="pt-2.5">
-          {greets.length > 0 && <ul className="m-0 mb-3 flex list-none flex-col gap-2.5 p-0">{greets.map((g) => <Greeting key={g.id} g={g} />)}</ul>}
+          {greets.length > 0 && <ul className="m-0 mb-3 flex list-none flex-col gap-2.5 p-0">{greets.map((g) => <Greeting key={g.id} g={g} postId={id} />)}</ul>}
           <div className="mb-2 flex flex-wrap gap-1.5">
             {QUICK_GREETINGS.map((q) => (
               <button key={q} type="button" onClick={() => send({ text: q })} className="cursor-pointer rounded-ctl border border-[#dfe7e3] bg-white px-2.5 py-1 text-[12px] text-ink transition-colors hover:bg-teal-soft">{q}</button>

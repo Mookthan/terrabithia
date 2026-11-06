@@ -20,6 +20,8 @@ export const EARN_RULES = [
   { k: 'course', icon: GraduationCap, l: 'เรียนคอร์สจบ', pts: 30, cap: 'ไม่จำกัด' },
   // Skills (mook 2026-10-31): undoing an endorsement takes the coin back, like unliking news.
   { k: 'endorse', icon: BadgeCheck, l: 'รับรองความถนัดให้เพื่อน', pts: 1, daily: 5, cap: '5 ครั้งต่อวัน ความถนัดละครั้ง' },
+  // Daily guess-the-colleague game (mook 2026-11-06): right answer only, once a day.
+  { k: 'guess', icon: Smile, l: 'ทายใครเอ่ยถูก', pts: 5, daily: 1, cap: 'วันละครั้ง' },
   { k: 'endorsed', icon: Award, l: 'ความถนัดของคุณได้รับการรับรอง', pts: 1, cap: '20 ต่อความถนัด' },
 ];
 export const ruleOf = (k) => EARN_RULES.find((r) => r.k === k);

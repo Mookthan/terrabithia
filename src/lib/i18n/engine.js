@@ -3,6 +3,7 @@
 // Thai is the source language; English is produced by dictionary + pattern rules.
 // Wrap any subtree that must not be translated with the `data-nt` attribute.
 import { I18N_EN, I18N_TH } from './dictionaries';
+import { I18N_RULES } from './rules';
 
 const I18N_UNITS={'วัน':['day','days'],'ชั่วโมง':['hour','hours'],'นาที':['min','min'],'วินาที':['sec','sec'],'ปี':['year','years'],'เดือน':['month','months'],'คน':['person','people'],'ครั้ง':['time','times'],'คอร์ส':['course','courses'],'บาท':['baht','baht'],'ไฟล์':['file','files'],'ข่าว':['news','news'],'เหรียญ':['coin','coins'],'ชิ้น':['pc','pcs'],'รูป':['photo','photos']};
 const I18N_MON_TH=['ม.ค.','ก.พ.','มี.ค.','เม.ย.','พ.ค.','มิ.ย.','ก.ค.','ส.ค.','ก.ย.','ต.ค.','พ.ย.','ธ.ค.'];
@@ -32,6 +33,12 @@ function i18nTrEN(src){
   if(!core) return src;
   const ex=i18nExact(core); if(ex!==undefined) return a+ex+z;
   if(core.length===1&&I18N_INIT_EN[core]) return a+I18N_INIT_EN[core]+z;
+  const mi=I18N_MON_TH.findIndex(k=>k===core||k.replace(/\.$/,'')===core); if(mi>=0) return a+I18N_MON_EN[mi]+z;
+  const my=core.match(/^(\S+\.)\s*(\d{4})$/); if(my){ const i=I18N_MON_TH.indexOf(my[1]); if(i>=0) return a+I18N_MON_EN[i]+' '+i18nYear(my[2])+z; }
+  const di=I18N_DOW_TH.indexOf(core); if(di>=0) return a+I18N_DOW_EN[di]+z;
+  for(const [re,fn] of I18N_RULES){ const mm=core.match(re); if(mm) return a+fn(mm,(x)=>i18nTrEN(x).trim())+z; }
+  // "A · B · C": translate each part on its own; keep it only when nothing Thai is left (no half-translated lines).
+  if(/\s·\s/.test(core)){ const j=core.split(/(\s·\s)/).map(p=>/^\s·\s$/.test(p)?p:i18nTrEN(p)).join(''); if(!/[\u0e00-\u0e7f]/.test(j)) return a+j+z; }
   if(core[0]==='#'&&/[\u0e00-\u0e7f]/.test(core)) return a+'#'+core.slice(1).split('·').map(p=>i18nTrEN(p.trim())).join('').replace(/\s+/g,'')+z;
   if(/\s[·|•]\s/.test(core)&&core.split(/\s[·|•]\s/).every(p=>i18nExact(p.trim())!==undefined||!/[\u0e00-\u0e7f]/.test(p))){ const sep=core.match(/\s[·|•]\s/)[0]; return a+core.split(sep).map(p=>{const e=i18nExact(p.trim());return e!==undefined?e:p;}).join(sep)+z; }
   let t=core;
@@ -49,7 +56,10 @@ function i18nTrEN(src){
       out+=rep; last=mt.index+mt[0].length;
       if(/^[A-Za-z0-9\(]/.test(t.slice(last))&&/[A-Za-z0-9\)]$/.test(rep)) out+=' ';
     }
-    out+=t.slice(last); t=out;
+    out+=t.slice(last);
+    // mook 2026-11-06: never show a half-translated line. If Thai is still left, keep the Thai source as it is.
+    if(/[\u0e00-\u0e7f]/.test(out)) return src;
+    t=out;
   }
   return a+t+z;
 }

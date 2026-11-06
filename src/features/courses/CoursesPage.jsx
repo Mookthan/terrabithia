@@ -33,6 +33,8 @@ export default function CoursesPage() {
         index={sel}
         reviews={reviews}
         onAddReview={(r) => setReviews((rs) => [r, ...rs])}
+        onEditReview={(id, x) => setReviews((rs) => rs.map((r) => (r.id === id ? { ...r, x, edited: true } : r)))}
+        onRemoveReview={(id) => setReviews((rs) => rs.filter((r) => r.id !== id))}
         onBack={() => (location.state?.fromList ? navigate(-1) : setParams({}, { replace: true }))}
       />
     );

@@ -3,6 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 import { ORG_PEOPLE } from '@/data/org';
 import SectionBar from '@/components/ui/SectionBar';
 import OrgChartSection from './components/org/OrgChartSection';
+import GuessLink from '@/features/guess/components/GuessLink';
 import PersonModal from './components/org/PersonModal';
 import Milestones from './components/Milestones';
 
@@ -21,7 +22,10 @@ export default function CompanyProfilePage() {
   return (
     <>
       <SectionBar section="About us" title="Company Profile" />
-      <h2 className="mb-3.5 text-xl font-bold text-ink">Organizational Chart</h2>
+      <div className="mb-3.5 flex flex-wrap items-center justify-between gap-x-3 gap-y-1">
+        <h2 className="m-0 text-xl font-bold text-ink">Organizational Chart</h2>
+        <GuessLink className="!mr-0" />
+      </div>
       <OrgChartSection onPerson={setPerson} />
       <Milestones />
       <PersonModal id={person} openJd={!!shared && person === shared} onClose={closePerson} />

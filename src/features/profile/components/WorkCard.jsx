@@ -7,6 +7,7 @@ import ProfileCard from './ProfileCard';
 import InfoList from './InfoList';
 import EvalResult, { LINK_BTN } from './EvalResult';
 import EvalUnlockModal from './EvalUnlockModal';
+import WarningResult from './WarningResult';
 import JdModal from './JdModal';
 import KpiModal from './KpiModal';
 import { KPIS, KPI_YEAR } from '../data';
@@ -50,6 +51,7 @@ export default function WorkCard() {
     ['เหรียญสะสม:', <CoinBalance key="coins" />],
     ['ผลการประเมิน:', <EvalResult key="eval" />],
     [`KPI ปี ${KPI_YEAR}:`, kpiRow],
+    ['ใบเตือน:', <WarningResult key="warn" />],
     ...WORK_INFO.slice(at).map(withJd),
   ];
   return (

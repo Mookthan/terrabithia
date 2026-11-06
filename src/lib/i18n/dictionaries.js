@@ -209,3 +209,17 @@ Object.assign(I18N_EN, {
 Object.assign(I18N_EN, {
 'ยังไม่มีบัญชี? ติดต่อ HR หรือ Admin':'No account yet? Contact HR or Admin',
 });
+Object.assign(I18N_EN, {
+'ใบรับรองและการอบรม':'Certificates & training','เพิ่มใบรับรอง':'Add certificate','คอร์สในเว็บ':'Site course','เพิ่มเอง':'Added by you','HR เพิ่มให้':'Added by HR','ลบใบรับรองนี้':'Delete this certificate',
+'ชื่อหลักสูตร / การอบรม':'Course / training name','หน่วยงานที่ออกใบรับรอง':'Issued by','วันที่ได้รับ':'Date received','ไฟล์ใบรับรอง (รูปหรือ PDF)':'Certificate file (image or PDF)',
+'เช่น Google UX Design Certificate':'e.g. Google UX Design Certificate','เช่น Coursera':'e.g. Coursera','กรุณากรอกชื่อหลักสูตรและหน่วยงานที่ออกใบรับรอง':'Please enter the course name and who issued it',
+'ยังไม่มีใบรับรอง คอร์สที่เรียนจบในเว็บจะขึ้นที่นี่เอง ส่วนการอบรมข้างนอกกด "เพิ่มใบรับรอง" ได้เลย':'No certificates yet. Courses you finish on the site appear here by themselves; for outside training, press "Add certificate".',
+'ใบรับรอง:':'Certificates:','ใบเตือน:':'Warnings:','ไม่มีใบเตือน':'No warnings','ดูรายละเอียด':'Details','ซ่อนรายละเอียด':'Hide details','มีผลอยู่':'In effect','พ้นกำหนดแล้ว':'Expired',
+'ตักเตือนด้วยวาจา':'Verbal warning','หนังสือเตือน':'Written warning','หนังสือเตือนครั้งสุดท้าย':'Final written warning','มาทำงานสายเกิน 3 ครั้งในเดือนเดียว':'Late more than 3 times in one month',
+'มีข้อสงสัยเรื่องใบเตือน ติดต่อ HR':'Questions about a warning? Contact HR','ฉบับ':'letter(s)','พ้นกำหนดแล้วทั้งหมด':'all expired','ออกเมื่อ':'Issued','มีผลถึง':'in effect until',
+'ผลการประเมินและใบเตือนเป็นข้อมูลส่วนตัว กรุณาใส่รหัสผ่านที่ใช้เข้าเว็บไซต์อีกครั้ง':'Evaluation results and warnings are private. Please enter your site password again.','ปลดล็อก':'Unlock',
+});
+Object.assign(I18N_EN, {
+'รอทีม PFM ตรวจ':'Waiting for PFM','กรุณาแนบไฟล์ใบรับรอง เพื่อให้ทีม PFM ตรวจ':'Please attach the certificate file so the PFM team can check it','ใบที่เพิ่มเองจะขึ้นใน Org Chart หลังทีม PFM ตรวจแล้ว':'Certificates you add show on the Org Chart after the PFM team checks them','แนบไฟล์ใบรับรอง (รูปหรือ PDF)':'Attach certificate (image or PDF)',
+});
+Object.assign(I18N_EN, {'ดูใบรับรอง':'View certificate'});

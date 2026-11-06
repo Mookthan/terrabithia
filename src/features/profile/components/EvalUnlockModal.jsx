@@ -35,7 +35,7 @@ export default function EvalUnlockModal({ onUnlock, onClose }) {
           <LockKeyhole className="lc !h-[22px] !w-[22px]" aria-hidden="true" />
         </span>
         <h2 className="text-[19px] font-bold text-ink">ยืนยันตัวตน</h2>
-        <p className="mb-4 mt-1 text-[13px] leading-[1.7] text-muted">ผลการประเมินเป็นข้อมูลส่วนตัว กรุณาใส่รหัสผ่านที่ใช้เข้าเว็บไซต์อีกครั้ง</p>
+        <p className="mb-4 mt-1 text-[13px] leading-[1.7] text-muted">ผลการประเมินและใบเตือนเป็นข้อมูลส่วนตัว กรุณาใส่รหัสผ่านที่ใช้เข้าเว็บไซต์อีกครั้ง</p>
         <label htmlFor="eval-pw" className="mb-1.5 block text-[12.5px] font-semibold text-ink">
           <span className="text-[#D93A44]" aria-hidden="true">*</span> รหัสผ่าน
         </label>
@@ -56,7 +56,7 @@ export default function EvalUnlockModal({ onUnlock, onClose }) {
         <FieldHint text={tried && !pw ? 'กรุณาใส่รหัสผ่าน' : ''} />
         <div className="mt-5 flex justify-end gap-2">
           <button type="button" onClick={onClose} className={`cursor-pointer rounded-ctl border border-line bg-white px-4 py-2 text-[13px] font-semibold text-ink ${OUTLINE_HOVER}`}>ยกเลิก</button>
-          <button type="submit" className="cursor-pointer rounded-ctl border-0 bg-teal-bright px-4 py-2 text-[13px] font-semibold text-white transition-colors duration-200 hover:!bg-teal-hover">ดูผลการประเมิน</button>
+          <button type="submit" className="cursor-pointer rounded-ctl border-0 bg-teal-bright px-4 py-2 text-[13px] font-semibold text-white transition-colors duration-200 hover:!bg-teal-hover">ปลดล็อก</button>
         </div>
       </form>
     </div>,

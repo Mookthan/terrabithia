@@ -4,6 +4,7 @@ import SectionBar from '@/components/ui/SectionBar';
 import PersonalCard from './components/PersonalCard';
 import WorkCard from './components/WorkCard';
 import CourseProgress from './components/CourseProgress';
+import CertSection from './components/CertSection';
 import LeaveSection from './components/LeaveSection';
 import useJumpToSection from './hooks/useJumpToSection';
 
@@ -21,6 +22,7 @@ export default function ProfilePage() {
         <WorkCard />
       </div>
       <CourseProgress />
+      <CertSection />
       <LeaveSection ref={leaveRef} />
     </>
   );

@@ -9,6 +9,8 @@ import SocialLinks from '@/features/showcase/components/SocialLinks';
 import { useSocial } from '@/features/showcase/social';
 import SkillChips from '@/features/showcase/components/SkillChips';
 import { useSkills } from '@/features/showcase/skills';
+import { certDate, useApprovedCerts } from '@/features/profile/certStore';
+import CertViewer from '@/features/profile/components/CertViewer';
 import { ME } from '@/data/me';
 import { useOrgHidden, usePersonalValues } from '@/features/profile/personalStore';
 import { orgNode } from '../../orgModel';
@@ -52,10 +54,12 @@ export default function PersonModal({ id, openJd = false, onClose }) {
   const phone = usePhone();
   const social = useSocial(id);
   const skills = useSkills(id);
+  const certs = useApprovedCerts(id);
+  const [cert, setCert] = useState(null);
   const mine = usePersonalValues();
   const hidden = useOrgHidden();
   useEffect(() => { setJd(openJd); setKpi(false); }, [id, openJd]);
-  useEscape(onClose, !!id && !(phone && (jd || kpi))); // on phones the JD / KPI page closes first
+  useEscape(onClose, !!id && !cert && !(phone && (jd || kpi))); // on phones the JD / KPI page closes first
   const base = id ? ORG_PEOPLE[id] : null;
   // My own card follows what I saved in my profile. Education and interests are optional: empty ones are left out.
   // Fields switched off in my profile are left out too (mook 2026-10-30).
@@ -118,10 +122,19 @@ export default function PersonModal({ id, openJd = false, onClose }) {
             </div>
           </Row>
         )}
+        {/* Certificates: left out when there are none or the owner hid them (mook 2026-11-05). Warning letters never show here. */}
+        {certs.length > 0 && !(id === ME.id && hidden.certs) && (
+          <Row label="ใบรับรอง:">
+            <ul className="min-w-0 flex-1">
+              {certs.map((c) => <li key={c.id}><button type="button" className={`${LINK_BTN} text-left`} onClick={() => setCert(c)}>{c.title}</button> <span className="text-muted">{`· ${c.issuer} · ${certDate(c)}`}</span></li>)}
+            </ul>
+          </Row>
+        )}
         {edu && <Row label="การศึกษา:">{edu}</Row>}
         {social.length > 0 && !(id === ME.id && hidden.social) && <Row label="โซเชียลมีเดีย:"><SocialLinks list={social} /></Row>}
         {p.interest && <Row label="ความสนใจ:">{p.interest}</Row>}
         <PersonAlbum id={id} />
+        {cert && <CertViewer c={cert} owner={id} onClose={() => setCert(null)} />}
       </div>
       {phone && jd && (
         <PhoneSheet title="Job Description" onClose={() => setJd(false)}>

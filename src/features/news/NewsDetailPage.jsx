@@ -14,7 +14,7 @@ import { addView, useNewsState, viewCount } from './newsStore';
 const chev = 'lc !h-[1.05em] !w-[1.05em] !align-[-.2em]';
 const navBtn = 'cursor-pointer rounded-ctl px-[18px] py-[9px] text-[13px]';
 
-/** One news article: photos, body, likes/comments, tags, prev/next and other news. */
+/** One news article: photos, body, likes/comments, prev/next and other news. */
 export default function NewsDetailPage() {
   const { id } = useParams();
   const navigate = useNavigate();
@@ -45,12 +45,6 @@ export default function NewsDetailPage() {
             </div>
           )}
           <NewsActions key={idx} index={idx} />
-          <div className="my-6 text-[13px]">
-            <b className="mr-2 text-ink">Tags:</b>
-            <span className="mr-[10px] text-teal-bright">#Terrabit</span>
-            <span className="mr-[10px] text-teal-bright">{`#${n.tag.replace(/\s/g, '')}`}</span>
-            <span className="mr-[10px] text-teal-bright">#News2026</span>
-          </div>
           <div className="mb-[10px] mt-6 flex justify-center gap-3">
             <button className={`${navBtn} border border-line bg-white text-ink ${OUTLINE_HOVER}`} onClick={() => navigate(PATHS.newsDetail(prev))}>
               <ChevronLeft className={chev} /> ย้อนกลับ

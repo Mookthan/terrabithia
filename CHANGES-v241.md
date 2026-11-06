@@ -332,3 +332,10 @@ The book itself is unchanged: the owner's book opens with all cards heaped at on
 - V264 (2026-11-03): 1:1 chat taken off the site (mook: no one has asked for it yet); code parked in parked/dm-messages to plug back in later (mook).
 - V265 (2026-11-03): PDPA notice on the login page: line under sign-in 'การเข้าใช้งานถือว่ารับทราบ นโยบายความเป็นส่วนตัว ⌄' folds open what the site keeps (EzyHR data, usage log 365 days, user content), draft wording for HR/legal (mook: login page only for now).
 - V266 (2026-11-04): login: email placeholder name@terrabit.co.th, the 'use company email' line replaced by 'ยังไม่มีบัญชี? ติดต่อ HR หรือ Admin'; wrong domains still get the red @terrabit.co.th error (mook).
+- V267 (2026-11-05): profile certificates + warnings: section 'ใบรับรองและการอบรม' (site courses automatic, outside ones added by owner/HR, add form folds open, owner can delete own, Org Chart show/hide switch; empty line when none) and Org Chart row 'ใบรับรอง:' (hidden when empty/off); work-card row 'ใบเตือน:' locked with the evaluation password, owner + HR only, never on Org Chart, 'ไม่มีใบเตือน' when none (mook).
+- V268 (2026-11-05): certificate cards drop the source tag (คอร์สในเว็บ / เพิ่มเอง / HR เพิ่มให้) (mook).
+- V269 (2026-11-05): self-added certificates need HR approval: file required, card shows 'รอ HR ตรวจ', left off the Org Chart until approved (useApprovedCerts) (mook chose option 2).
+- V270 (2026-11-05): the PFM team (not HR) approves self-added certificates: 'รอทีม PFM ตรวจ' (mook).
+- V271 (2026-11-05): certificate cards open a big certificate view (CertViewer; uploaded image or a drawn certificate until real scans); only the owner gets ดาวน์โหลด, others view only; Org Chart certificate titles are green links to the same view (mook).
+- V272 (2026-11-05): certificate cards lift 4px with shadow-pop on hover, like the course cards (mook).
+- V273 (2026-11-06): removed the Tags row (#Terrabit #category #News2026) from the news article page; tags were green but not clickable (mook).
